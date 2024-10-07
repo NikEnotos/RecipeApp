@@ -1,0 +1,357 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="mssql2303722Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Ingredients">
+          <Key>
+            <PropertyRef Name="IngredientID" />
+          </Key>
+          <Property Name="IngredientID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="NutritionalInfo" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="RecipeIngredients">
+          <Key>
+            <PropertyRef Name="RecipeID" />
+            <PropertyRef Name="IngredientID" />
+          </Key>
+          <Property Name="RecipeID" Type="int" Nullable="false" />
+          <Property Name="IngredientID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Recipes">
+          <Key>
+            <PropertyRef Name="RecipeID" />
+          </Key>
+          <Property Name="RecipeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Cuisine" Type="varchar" MaxLength="50" />
+          <Property Name="PreparationTime" Type="int" />
+          <Property Name="AverageRating" Type="decimal" Precision="3" Scale="2" />
+        </EntityType>
+        <EntityType Name="UserFavorites">
+          <Key>
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="RecipeID" />
+          </Key>
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="RecipeID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserProfiles">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Username" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="DietaryPreferences" Type="varchar" MaxLength="255" />
+          <Property Name="Allergies" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="UserRatingsReviews">
+          <Key>
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="RecipeID" />
+          </Key>
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="RecipeID" Type="int" Nullable="false" />
+          <Property Name="Rating" Type="decimal" Precision="3" Scale="2" />
+          <Property Name="Review" Type="text" />
+        </EntityType>
+        <Association Name="FK__RecipeIng__Ingre__0C85DE4D">
+          <End Role="Ingredients" Type="Self.Ingredients" Multiplicity="1" />
+          <End Role="RecipeIngredients" Type="Self.RecipeIngredients" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ingredients">
+              <PropertyRef Name="IngredientID" />
+            </Principal>
+            <Dependent Role="RecipeIngredients">
+              <PropertyRef Name="IngredientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__RecipeIng__Recip__0D7A0286">
+          <End Role="Recipes" Type="Self.Recipes" Multiplicity="1" />
+          <End Role="RecipeIngredients" Type="Self.RecipeIngredients" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Recipes">
+              <PropertyRef Name="RecipeID" />
+            </Principal>
+            <Dependent Role="RecipeIngredients">
+              <PropertyRef Name="RecipeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserFavor__Recip__0E6E26BF">
+          <End Role="Recipes" Type="Self.Recipes" Multiplicity="1" />
+          <End Role="UserFavorites" Type="Self.UserFavorites" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Recipes">
+              <PropertyRef Name="RecipeID" />
+            </Principal>
+            <Dependent Role="UserFavorites">
+              <PropertyRef Name="RecipeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserFavor__UserI__0F624AF8">
+          <End Role="UserProfiles" Type="Self.UserProfiles" Multiplicity="1" />
+          <End Role="UserFavorites" Type="Self.UserFavorites" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserProfiles">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="UserFavorites">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserRatin__Recip__10566F31">
+          <End Role="Recipes" Type="Self.Recipes" Multiplicity="1" />
+          <End Role="UserRatingsReviews" Type="Self.UserRatingsReviews" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Recipes">
+              <PropertyRef Name="RecipeID" />
+            </Principal>
+            <Dependent Role="UserRatingsReviews">
+              <PropertyRef Name="RecipeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserRatin__UserI__114A936A">
+          <End Role="UserProfiles" Type="Self.UserProfiles" Multiplicity="1" />
+          <End Role="UserRatingsReviews" Type="Self.UserRatingsReviews" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserProfiles">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="UserRatingsReviews">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="mssql2303722ModelStoreContainer">
+          <EntitySet Name="Ingredients" EntityType="Self.Ingredients" Schema="RecipesDB" store:Type="Tables" />
+          <EntitySet Name="RecipeIngredients" EntityType="Self.RecipeIngredients" Schema="RecipesDB" store:Type="Tables" />
+          <EntitySet Name="Recipes" EntityType="Self.Recipes" Schema="RecipesDB" store:Type="Tables" />
+          <EntitySet Name="UserFavorites" EntityType="Self.UserFavorites" Schema="RecipesDB" store:Type="Tables" />
+          <EntitySet Name="UserProfiles" EntityType="Self.UserProfiles" Schema="RecipesDB" store:Type="Tables" />
+          <EntitySet Name="UserRatingsReviews" EntityType="Self.UserRatingsReviews" Schema="RecipesDB" store:Type="Tables" />
+          <AssociationSet Name="FK__RecipeIng__Ingre__0C85DE4D" Association="Self.FK__RecipeIng__Ingre__0C85DE4D">
+            <End Role="Ingredients" EntitySet="Ingredients" />
+            <End Role="RecipeIngredients" EntitySet="RecipeIngredients" />
+          </AssociationSet>
+          <AssociationSet Name="FK__RecipeIng__Recip__0D7A0286" Association="Self.FK__RecipeIng__Recip__0D7A0286">
+            <End Role="Recipes" EntitySet="Recipes" />
+            <End Role="RecipeIngredients" EntitySet="RecipeIngredients" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserFavor__Recip__0E6E26BF" Association="Self.FK__UserFavor__Recip__0E6E26BF">
+            <End Role="Recipes" EntitySet="Recipes" />
+            <End Role="UserFavorites" EntitySet="UserFavorites" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserFavor__UserI__0F624AF8" Association="Self.FK__UserFavor__UserI__0F624AF8">
+            <End Role="UserProfiles" EntitySet="UserProfiles" />
+            <End Role="UserFavorites" EntitySet="UserFavorites" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserRatin__Recip__10566F31" Association="Self.FK__UserRatin__Recip__10566F31">
+            <End Role="Recipes" EntitySet="Recipes" />
+            <End Role="UserRatingsReviews" EntitySet="UserRatingsReviews" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserRatin__UserI__114A936A" Association="Self.FK__UserRatin__UserI__114A936A">
+            <End Role="UserProfiles" EntitySet="UserProfiles" />
+            <End Role="UserRatingsReviews" EntitySet="UserRatingsReviews" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="mssql2303722Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Ingredient">
+          <Key>
+            <PropertyRef Name="IngredientID" />
+          </Key>
+          <Property Name="IngredientID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NutritionalInfo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Recipes" Relationship="Self.RecipeIngredients" FromRole="Ingredients" ToRole="Recipes" />
+        </EntityType>
+        <EntityType Name="Recipe">
+          <Key>
+            <PropertyRef Name="RecipeID" />
+          </Key>
+          <Property Name="RecipeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Cuisine" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PreparationTime" Type="Int32" />
+          <Property Name="AverageRating" Type="Decimal" Precision="3" Scale="2" />
+          <NavigationProperty Name="UserRatingsReviews" Relationship="Self.FK__UserRatin__Recip__10566F31" FromRole="Recipes" ToRole="UserRatingsReviews" />
+          <NavigationProperty Name="Ingredients" Relationship="Self.RecipeIngredients" FromRole="Recipes" ToRole="Ingredients" />
+          <NavigationProperty Name="UserProfiles" Relationship="Self.UserFavorites" FromRole="Recipes" ToRole="UserProfiles" />
+        </EntityType>
+        <EntityType Name="UserProfile">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DietaryPreferences" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Allergies" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="UserRatingsReviews" Relationship="Self.FK__UserRatin__UserI__114A936A" FromRole="UserProfiles" ToRole="UserRatingsReviews" />
+          <NavigationProperty Name="Recipes" Relationship="Self.UserFavorites" FromRole="UserProfiles" ToRole="Recipes" />
+        </EntityType>
+        <EntityType Name="UserRatingsReview">
+          <Key>
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="RecipeID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="RecipeID" Type="Int32" Nullable="false" />
+          <Property Name="Rating" Type="Decimal" Precision="3" Scale="2" />
+          <Property Name="Review" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Recipe" Relationship="Self.FK__UserRatin__Recip__10566F31" FromRole="UserRatingsReviews" ToRole="Recipes" />
+          <NavigationProperty Name="UserProfile" Relationship="Self.FK__UserRatin__UserI__114A936A" FromRole="UserRatingsReviews" ToRole="UserProfiles" />
+        </EntityType>
+        <Association Name="FK__UserRatin__Recip__10566F31">
+          <End Role="Recipes" Type="Self.Recipe" Multiplicity="1" />
+          <End Role="UserRatingsReviews" Type="Self.UserRatingsReview" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Recipes">
+              <PropertyRef Name="RecipeID" />
+            </Principal>
+            <Dependent Role="UserRatingsReviews">
+              <PropertyRef Name="RecipeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserRatin__UserI__114A936A">
+          <End Role="UserProfiles" Type="Self.UserProfile" Multiplicity="1" />
+          <End Role="UserRatingsReviews" Type="Self.UserRatingsReview" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserProfiles">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="UserRatingsReviews">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="RecipeIngredients">
+          <End Role="Ingredients" Type="Self.Ingredient" Multiplicity="*" />
+          <End Role="Recipes" Type="Self.Recipe" Multiplicity="*" />
+        </Association>
+        <Association Name="UserFavorites">
+          <End Role="Recipes" Type="Self.Recipe" Multiplicity="*" />
+          <End Role="UserProfiles" Type="Self.UserProfile" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="mssql2303722Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Ingredients" EntityType="Self.Ingredient" />
+          <EntitySet Name="Recipes" EntityType="Self.Recipe" />
+          <EntitySet Name="UserProfiles" EntityType="Self.UserProfile" />
+          <EntitySet Name="UserRatingsReviews" EntityType="Self.UserRatingsReview" />
+          <AssociationSet Name="FK__UserRatin__Recip__10566F31" Association="Self.FK__UserRatin__Recip__10566F31">
+            <End Role="Recipes" EntitySet="Recipes" />
+            <End Role="UserRatingsReviews" EntitySet="UserRatingsReviews" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserRatin__UserI__114A936A" Association="Self.FK__UserRatin__UserI__114A936A">
+            <End Role="UserProfiles" EntitySet="UserProfiles" />
+            <End Role="UserRatingsReviews" EntitySet="UserRatingsReviews" />
+          </AssociationSet>
+          <AssociationSet Name="RecipeIngredients" Association="Self.RecipeIngredients">
+            <End Role="Ingredients" EntitySet="Ingredients" />
+            <End Role="Recipes" EntitySet="Recipes" />
+          </AssociationSet>
+          <AssociationSet Name="UserFavorites" Association="Self.UserFavorites">
+            <End Role="Recipes" EntitySet="Recipes" />
+            <End Role="UserProfiles" EntitySet="UserProfiles" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="mssql2303722ModelStoreContainer" CdmEntityContainer="mssql2303722Entities">
+          <EntitySetMapping Name="Ingredients">
+            <EntityTypeMapping TypeName="mssql2303722Model.Ingredient">
+              <MappingFragment StoreEntitySet="Ingredients">
+                <ScalarProperty Name="IngredientID" ColumnName="IngredientID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="NutritionalInfo" ColumnName="NutritionalInfo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Recipes">
+            <EntityTypeMapping TypeName="mssql2303722Model.Recipe">
+              <MappingFragment StoreEntitySet="Recipes">
+                <ScalarProperty Name="RecipeID" ColumnName="RecipeID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Cuisine" ColumnName="Cuisine" />
+                <ScalarProperty Name="PreparationTime" ColumnName="PreparationTime" />
+                <ScalarProperty Name="AverageRating" ColumnName="AverageRating" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserProfiles">
+            <EntityTypeMapping TypeName="mssql2303722Model.UserProfile">
+              <MappingFragment StoreEntitySet="UserProfiles">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="DietaryPreferences" ColumnName="DietaryPreferences" />
+                <ScalarProperty Name="Allergies" ColumnName="Allergies" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserRatingsReviews">
+            <EntityTypeMapping TypeName="mssql2303722Model.UserRatingsReview">
+              <MappingFragment StoreEntitySet="UserRatingsReviews">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="RecipeID" ColumnName="RecipeID" />
+                <ScalarProperty Name="Rating" ColumnName="Rating" />
+                <ScalarProperty Name="Review" ColumnName="Review" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="RecipeIngredients" TypeName="mssql2303722Model.RecipeIngredients" StoreEntitySet="RecipeIngredients">
+            <EndProperty Name="Ingredients">
+              <ScalarProperty Name="IngredientID" ColumnName="IngredientID" />
+            </EndProperty>
+            <EndProperty Name="Recipes">
+              <ScalarProperty Name="RecipeID" ColumnName="RecipeID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="UserFavorites" TypeName="mssql2303722Model.UserFavorites" StoreEntitySet="UserFavorites">
+            <EndProperty Name="Recipes">
+              <ScalarProperty Name="RecipeID" ColumnName="RecipeID" />
+            </EndProperty>
+            <EndProperty Name="UserProfiles">
+              <ScalarProperty Name="UserID" ColumnName="UserID" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
